@@ -58,7 +58,7 @@ StreamWidget::StreamWidget(QProcess* rclone, QProcess* player, const QString& re
         }
     });
 
-    QObject::connect(mRclone, static_cast<void(QProcess::*)(int)>(&QProcess::finished), this, [=]()
+    QObject::connect(mRclone, static_cast<void(QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished), this, [=]()
     {
         mRclone->deleteLater();
         mRunning = false;

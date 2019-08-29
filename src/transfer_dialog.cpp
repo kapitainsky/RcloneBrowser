@@ -131,7 +131,7 @@ QString TransferDialog::getMode() const
         return "Sync";
     }
 
-    return QString::null;
+    return QString();
 }
 
 QString TransferDialog::getSource() const

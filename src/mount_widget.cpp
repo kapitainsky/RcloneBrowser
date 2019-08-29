@@ -57,7 +57,7 @@ MountWidget::MountWidget(QProcess* process, const QString& remote, const QString
         }
     });
 
-    QObject::connect(mProcess, static_cast<void(QProcess::*)(int)>(&QProcess::finished), this, [=](int status)
+    QObject::connect(mProcess, static_cast<void(QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished), this, [=](int status, QProcess::ExitStatus)
     {
         mProcess->deleteLater();
         mRunning = false;

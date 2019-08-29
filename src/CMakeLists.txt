@@ -10,7 +10,7 @@ endif()
 if(WIN32)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4 /WX /wd4100 /wd4189")
 else()
-  add_definitions("-pedantic -Wall -Wextra  -std=c++11")
+  add_definitions("-pedantic -Wall -Wextra -Werror -std=c++11")
 endif()
 
 project(rclone-browser)
