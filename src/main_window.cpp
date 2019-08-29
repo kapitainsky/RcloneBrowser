@@ -170,14 +170,17 @@ MainWindow::MainWindow()
     if (rclone.isEmpty())
     {
         rclone = QStandardPaths::findExecutable("rclone");
-        auto settings = GetSettings();
-        settings->setValue("Settings/rclone", rclone);
-        SetRclone(rclone);
-    }
-    if (rclone.isEmpty())
-    {
-        QMessageBox::information(this, "Error", "Cannot check rclone version!\nPlease verify rclone location.");
-        emit ui.preferences->trigger();
+        if (rclone.isEmpty())
+        {
+            QMessageBox::information(this, "Error", "Cannot check rclone version!\nPlease verify rclone location.");
+            emit ui.preferences->trigger();
+        }
+        else
+        {
+            auto settings = GetSettings();
+            settings->setValue("Settings/rclone", rclone);
+            SetRclone(rclone);
+        }
     }
     else
     {
@@ -459,7 +462,7 @@ void MainWindow::closeEvent(QCloseEvent* ev)
 
     if (canClose())
     {
-        ev->accept();
+        QApplication::quit();
     }
     else
     {
