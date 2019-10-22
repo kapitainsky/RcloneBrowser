@@ -19,8 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        #job_name: ['linux', 'mac', 'windows_amd64' ]
-        job_name: ['linux', 'mac' ]
+        job_name: ['linux', 'mac', 'windows_amd64' ]
 
         include:
           - job_name: linux
@@ -31,11 +30,6 @@ jobs:
 
             #- job_name: windows_amd64
             #  os: windows-latest
-            #  modules: 'off'
-            #  build_flags: '-include "^windows/amd64" -cgo'
-            #  quicktest: true
-            #  racequicktest: true
-            #  deploy: true
 
     name: ${{ matrix.job_name }}
 
@@ -71,26 +65,77 @@ jobs:
           brew install rclone
         if: matrix.os == 'macOS-latest'
 
-        #- name: Install Libraries on Windows
-        #  shell: powershell
-        #  run: |
-        #    $ProgressPreference = 'SilentlyContinue'
-        #    choco install -y winfsp zip
-        #    # Copy mingw32-make.exe to make.exe so the same command line
-        #    # can be used on Windows as on macOS and Linux
-        #    $path = (get-command mingw32-make.exe).Path
-        #    Copy-Item -Path $path -Destination (Join-Path (Split-Path -Path $path) 'make.exe')
-        #  if: matrix.os == 'windows-latest'
-        #
-      - name: Compile on Linux
+      - name: Install Libraries on Windows
+        shell: powershell
+        run: |
+          $ProgressPreference = 'SilentlyContinue'
+          choco install -y rclone
+        if: matrix.os == 'windows-latest'
+
+      - name: Compile
         shell: bash
         run: |
           mkdir build && cd build
-          cmake ..
+          cmake .. -DCMAKE_BUILD_TYPE=Release
           cmake --build .
+        if: matrix.os == 'ubuntu-latest'
+
+      - name: Compile
+        shell: bash
+        run: |
+          mkdir build && cd build
+          cmake .. -DCMAKE_BUILD_TYPE=Release
+          cmake --build .
+        if: matrix.os == 'macOS-latest'
+
+      - name: Compile on Windows
+        shell: powershell
+        run: |
+          mkdir build
+          cd build
+          cmake -G "Visual Studio 16 2019" -A x64 -DCMAKE_CONFIGURATION_TYPES="Release" ..
+          cmake --build . --config Release
+        if: matrix.os == 'windows-latest'
+
+      - name: Debugging
+        shell: bash
+        run: |
+          pwd
+          ls -lah
+          echo $Qt5_Dir
+          ls -lah build/
 
       - name: Package for macOS
         shell: bash
         run: |
-          macdeployqt rclone-browser.app -executable="build/rclone-browser.app/Contents/MacOS/rclone-browser" -qmldir=../src/
+          cd build
+          macdeployqt rclone-browser.app -executable="rclone-browser.app/Contents/MacOS/rclone-browser" -qmldir=../src/
+        if: matrix.os == 'macOS-latest'
 
+      - name: Debugging
+        shell: bash
+        run: |
+          pwd
+          ls -lah
+          ls -lah build/
+
+      - name: Upload artifacts Linux
+        uses: actions/upload-artifact@v1
+        with:
+          name: "rclone-browser-${{ github.ref }}-${{ github.sha  }}-amd64"
+          path: build/
+        if: matrix.os == 'ubuntu-latest'
+
+      - name: Upload artifacts macOS
+        uses: actions/upload-artifact@v1
+        with:
+          name: "rclone-browser-${{ github.ref }}-${{ github.sha  }}-macOS"
+          path: build/
+        if: matrix.os == 'macOS-latest'
+
+      - name: Upload artifacts Windows
+        uses: actions/upload-artifact@v1
+        with:
+          name: "rclone-browser-${{ github.ref }}-${{ github.sha }}-win64"
+          path: build/build/Release/RcloneBrowser.exe
+        if: matrix.os == 'windows-latest'
