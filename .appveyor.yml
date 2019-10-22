@@ -1,5 +1,10 @@
 version: '#{build}'
 image: 'Visual Studio 2019'
+- provider: Environment
+  name: production
+  on:
+    APPVEYOR_REPO_TAG: true
+
 branches:
   only:
   - master
@@ -13,4 +18,18 @@ build_script:
 artifacts:
 - path: build/build/Release/RcloneBrowser.exe
 test: off
+
 deploy: off
+#deploy:
+#  release: "Rclone Browser $(APPVEYOR_REPO_TAG_NAME)"
+#  description: 'Release description'
+#  provider: GitHub
+#  auth_token:
+#    secure: r encrypted token> # your encrypted token from GitHub
+#  artifact: /.*\.exe/            # upload all NuGet packages to release assets
+#  draft: false
+#  prerelease: false
+#  on:
+#    branch: master                 # release from master branch only
+#    APPVEYOR_REPO_TAG: true        # deploy on tag push only
+

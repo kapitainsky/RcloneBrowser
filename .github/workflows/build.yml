@@ -56,7 +56,8 @@ jobs:
       - name: Install Libraries on Linux
         shell: bash
         run: |
-          sudo apt-get install git rclone g++ cmake qtbase5-dev
+          sudo apt-get update
+          sudo apt-get install git rclone g++ cmake
         if: matrix.os == 'ubuntu-latest'
 
       - name: Install Libraries on macOS
@@ -67,7 +68,7 @@ jobs:
           echo '::set-env name=CPPFLAGS::-I/usr/local/opt/qt/include'
           echo '::set-env name=PKG_CONFIG_PATH::/usr/local/opt/qt/lib/pkgconfig'
           brew update
-          brew install git cmake rclone qt5
+          brew install git cmake rclone
         if: matrix.os == 'macOS-latest'
 
         #- name: Install Libraries on Windows
@@ -81,24 +82,12 @@ jobs:
         #    Copy-Item -Path $path -Destination (Join-Path (Split-Path -Path $path) 'make.exe')
         #  if: matrix.os == 'windows-latest'
         #
-      - name: Debugging
-        shell: bash
-        run: |
-          pwd
-          ls -lahR
-
       - name: Compile on Linux
         shell: bash
         run: |
           mkdir build && cd build
           cmake ..
           cmake --build .
-
-      - name: Debugging
-        shell: bash
-        run: |
-          pwd
-          ls -lahR
 
       - name: Package for macOS
         shell: bash
