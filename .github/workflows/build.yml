@@ -57,18 +57,18 @@ jobs:
         shell: bash
         run: |
           sudo apt-get update
-          sudo apt-get install git rclone g++ cmake
+          sudo apt-get install rclone cmake
         if: matrix.os == 'ubuntu-latest'
 
       - name: Install Libraries on macOS
         shell: bash
         run: |
-          echo '::set-env name=PATH::/usr/local/opt/qt/bin'
+          echo '::add-path::/usr/local/opt/qt/bin'
           echo '::set-env name=LDFLAGS::-L/usr/local/opt/qt/lib'
           echo '::set-env name=CPPFLAGS::-I/usr/local/opt/qt/include'
           echo '::set-env name=PKG_CONFIG_PATH::/usr/local/opt/qt/lib/pkgconfig'
           brew update
-          brew install git cmake rclone
+          brew install rclone
         if: matrix.os == 'macOS-latest'
 
         #- name: Install Libraries on Windows
