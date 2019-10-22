@@ -57,7 +57,7 @@ jobs:
         shell: bash
         run: |
           sudo apt-get update
-          sudo apt-get install rclone cmake
+          sudo apt-get install rclone cmake libgl-dev
         if: matrix.os == 'ubuntu-latest'
 
       - name: Install Libraries on macOS
@@ -92,5 +92,5 @@ jobs:
       - name: Package for macOS
         shell: bash
         run: |
-          macdeployqt rclone-browser.app -executable="rclone-browser.app/Contents/MacOS/rclone-browser" -qmldir=../src/
+          macdeployqt rclone-browser.app -executable="build/rclone-browser.app/Contents/MacOS/rclone-browser" -qmldir=../src/
 
