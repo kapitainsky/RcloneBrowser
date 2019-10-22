@@ -1,0 +1,107 @@
+---
+# Github Actions build for rclone
+# -*- compile-command: "yamllint -f parsable build.yml" -*-
+
+name: build
+
+# Trigger the workflow on push or pull request
+on:
+  push:
+    #tags:
+    #  - v*
+    branch:
+      - '*'
+
+
+jobs:
+  build:
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        #job_name: ['linux', 'mac', 'windows_amd64' ]
+        job_name: ['linux', 'mac' ]
+
+        include:
+          - job_name: linux
+            os: ubuntu-latest
+
+          - job_name: mac
+            os: macOS-latest
+
+            #- job_name: windows_amd64
+            #  os: windows-latest
+            #  modules: 'off'
+            #  build_flags: '-include "^windows/amd64" -cgo'
+            #  quicktest: true
+            #  racequicktest: true
+            #  deploy: true
+
+    name: ${{ matrix.job_name }}
+
+    runs-on: ${{ matrix.os }}
+
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+        with:
+          path: ./src/github.com/${{ github.repository }}
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v1
+        with:
+          version: 5.13.1
+
+      - name: Install Libraries on Linux
+        shell: bash
+        run: |
+          sudo apt-get install git rclone g++ cmake qtbase5-dev
+        if: matrix.os == 'ubuntu-latest'
+
+      - name: Install Libraries on macOS
+        shell: bash
+        run: |
+          echo '::set-env name=PATH::/usr/local/opt/qt/bin'
+          echo '::set-env name=LDFLAGS::-L/usr/local/opt/qt/lib'
+          echo '::set-env name=CPPFLAGS::-I/usr/local/opt/qt/include'
+          echo '::set-env name=PKG_CONFIG_PATH::/usr/local/opt/qt/lib/pkgconfig'
+          brew update
+          brew install git cmake rclone qt5
+        if: matrix.os == 'macOS-latest'
+
+        #- name: Install Libraries on Windows
+        #  shell: powershell
+        #  run: |
+        #    $ProgressPreference = 'SilentlyContinue'
+        #    choco install -y winfsp zip
+        #    # Copy mingw32-make.exe to make.exe so the same command line
+        #    # can be used on Windows as on macOS and Linux
+        #    $path = (get-command mingw32-make.exe).Path
+        #    Copy-Item -Path $path -Destination (Join-Path (Split-Path -Path $path) 'make.exe')
+        #  if: matrix.os == 'windows-latest'
+        #
+      - name: Debugging
+        shell: bash
+        run: |
+          pwd
+          ls -lahR
+
+      - name: Compile on Linux
+        shell: bash
+        run: |
+          mkdir build && cd build
+          cmake ..
+          cmake --build .
+
+      - name: Debugging
+        shell: bash
+        run: |
+          pwd
+          ls -lahR
+
+      - name: Package for macOS
+        shell: bash
+        run: |
+          macdeployqt rclone-browser.app -executable="rclone-browser.app/Contents/MacOS/rclone-browser" -qmldir=../src/
+
