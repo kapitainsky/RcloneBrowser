@@ -28,8 +28,8 @@ jobs:
           - job_name: mac
             os: macOS-latest
 
-            #- job_name: windows_amd64
-            #  os: windows-latest
+          - job_name: windows_amd64
+            os: windows-latest
 
     name: ${{ matrix.job_name }}
 
