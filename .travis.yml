@@ -11,6 +11,15 @@ matrix:
         apt:
           packages:
             - qttools5-dev
+    #powerjob
+    - os: linux
+      arch: ppc64le
+      language: cpp
+      sudo: false
+      addons:
+        apt:
+          packages:
+            - qttools5-dev           
       script:
         - mkdir build && cd build
         - cmake ..
