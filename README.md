@@ -80,11 +80,14 @@ How to get it
 --------------
 Get binaries for Windows, macOS and Linux on [releases][3]' page.
 
-Windows installers (64-bit and 32-bit) are compatible with all x86 based Windows OS starting with Windows 7. If for whatever reason somebody would prefer not to run installer all files can be extracted using [innoextract](https://constexpr.org/innoextract/).
+**Windows** installers (64-bit and 32-bit) are compatible with all x86 based Windows OS starting with Windows 7. If for whatever reason somebody would prefer not to run installer all files can be extracted using [innoextract](https://constexpr.org/innoextract/).
 
-Mac version is compiled to run on all versions of macOS starting with 10.9.
+**Mac** version is compiled to run on all versions of macOS starting with 10.9. You can also install via [Homebrew](https://brew.sh/):
+```
+brew install kapitainsky-rclone-browser
+```
 
-Situation with Linux is a bit fuzzier...
+Situation with **Linux** is a bit fuzzier...
 Linux binary ([AppImage](https://appimage.org/)) for armhf architecture runs on any Raspberry Pi hardware using Raspbian based on Stretch or Buster.
 
 Linux binaries (AppImage) for x86_64 and i386 architectures should run on systems using distributions released in the last few years. x86_64 one is built on CentOS 7 (released in 2014) and i386 on Ubuntu 16.04 LTS (released in 2016).
