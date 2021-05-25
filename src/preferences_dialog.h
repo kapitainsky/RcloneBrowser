@@ -16,6 +16,7 @@ public:
   QString getMount() const;
   QString getDefaultDownloadDir() const;
   QString getDefaultUploadDir() const;
+  QString getDefaultMountDir() const;
   QString getDefaultDownloadOptions() const;
   QString getDefaultUploadOptions() const;
   QString getDefaultRcloneOptions() const;

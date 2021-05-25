@@ -152,6 +152,8 @@ MainWindow::MainWindow() {
       settings->setValue("Settings/mount", dialog.getMount());
       settings->setValue("Settings/defaultDownloadDir",
                          dialog.getDefaultDownloadDir().trimmed());
+      settings->setValue("Settings/defaultMountDir",
+                         dialog.getDefaultMountDir().trimmed());
       settings->setValue("Settings/defaultUploadDir",
                          dialog.getDefaultUploadDir().trimmed());
       settings->setValue("Settings/defaultDownloadOptions",
@@ -1085,6 +1087,7 @@ void MainWindow::addTransfer(const QString &message, const QString &source,
 }
 
 void MainWindow::addMount(const QString &remote, const QString &folder) {
+
   QProcess *mount = new QProcess(this);
   mount->setProcessChannelMode(QProcess::MergedChannels);
 

@@ -301,16 +301,40 @@ QString root = isLocal ? "/" : QString();
     QString path = model->path(index).path();
     QString pathMsg = isLocal ? QDir::toNativeSeparators(path) : path;
 
-#if defined(Q_OS_WIN32)
-    QString folder =
-        QInputDialog::getText(this, "Mount",
-                              QString("(Make sure you have WinFsp-FUSE "
-                                      "installed)\n\nDrive to mount %1 to")
-                                  .arg(remote),
-                              QLineEdit::Normal, "Z:");
-#else
-        QString folder = QFileDialog::getExistingDirectory(this, QString("Mount %1").arg(remote));
-#endif
+    QString rootMountPath = settings->value("Settings/defaultMountDir").toString();
+    QString folder;
+
+    if (!rootMountPath.isEmpty()) {
+
+        folder = QDir(rootMountPath).filePath(remote);
+
+        QDir dir(folder);
+        if (!dir.exists())
+            dir.mkpath(".");
+
+        const QFileInfo outputDir(folder);
+
+        if (!(outputDir.exists()) || (!outputDir.isDir()) || (!outputDir.isWritable())) {
+            QString msg = QString("%1 output directory does not exist, is not a directory, or is not writeable").arg(folder);
+            QMessageBox msgBox;
+            msgBox.setText(msg);
+            msgBox.exec();
+        }
+
+
+    } else {
+
+    #if defined(Q_OS_WIN32)
+        folder =
+            QInputDialog::getText(this, "Mount",
+                                QString("(Make sure you have WinFsp-FUSE "
+                                        "installed)\n\nDrive to mount %1 to")
+                                    .arg(remote),
+                                QLineEdit::Normal, "Z:");
+    #else
+        folder = QFileDialog::getExistingDirectory(this, QString("Mount %1").arg(remote));
+    #endif
+    }
 
     if (!folder.isEmpty()) {
       emit addMount(remote + ":" + path, folder);
