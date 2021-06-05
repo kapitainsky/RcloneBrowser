@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>751</width>
-    <height>537</height>
+    <width>757</width>
+    <height>555</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -20,6 +20,19 @@
    <string>Preferences</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <spacer name="verticalSpacer_General">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>714</width>
+       <height>294</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="sizePolicy">
@@ -35,8 +48,24 @@
       <attribute name="title">
        <string>General</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_5">
-       <item>
+      <layout class="QFormLayout" name="formLayout">
+       <item row="1" column="0">
+        <spacer name="verticalSpacer1">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>252</width>
+           <height>10</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="0" colspan="2">
         <widget class="QGroupBox" name="groupBox_2">
          <property name="title">
           <string>Settings</string>
@@ -48,74 +77,44 @@
           <bool>false</bool>
          </property>
          <layout class="QGridLayout" name="gridLayout_3">
-          <property name="bottomMargin">
-           <number>12</number>
-          </property>
-          <property name="horizontalSpacing">
-           <number>-1</number>
-          </property>
-          <item row="0" column="2">
-           <widget class="QToolButton" name="rcloneBrowse">
-            <property name="text">
-             <string>...</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QLabel" name="label">
-            <property name="text">
-             <string>rclone.conf location:</string>
-            </property>
-            <property name="buddy">
-             <cstring>rcloneConf</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="14" column="0">
-           <widget class="QLabel" name="label_12">
-            <property name="text">
-             <string>Default rclone options:</string>
-            </property>
-            <property name="buddy">
-             <cstring>defaultRcloneOptions</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="11" column="2">
-           <widget class="QToolButton" name="defaultUploadDirBrowse">
-            <property name="text">
-             <string>...</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="rclone">
-            <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;rclone executable file location&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-           </widget>
-          </item>
           <item row="7" column="0">
-           <widget class="QLabel" name="mountLabel">
+           <widget class="QLabel" name="label_11">
             <property name="text">
-             <string>Mount options:</string>
+             <string>Default upload options:</string>
             </property>
             <property name="buddy">
-             <cstring>mount</cstring>
+             <cstring>defaultUploadOptions</cstring>
             </property>
            </widget>
           </item>
-          <item row="12" column="1">
+          <item row="6" column="1">
            <widget class="QLineEdit" name="defaultDownloadOptions">
             <property name="toolTip">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;extra rclone options used for downloads&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
            </widget>
           </item>
-          <item row="9" column="1">
-           <widget class="QLineEdit" name="defaultDownloadDir">
+          <item row="5" column="0">
+           <widget class="QLabel" name="label_u">
+            <property name="text">
+             <string>Default upload folder:</string>
+            </property>
+            <property name="buddy">
+             <cstring>defaultUploadDir</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QToolButton" name="rcloneConfBrowse">
+            <property name="text">
+             <string>...</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="stream">
             <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;default download folder used for transfers&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;location of audio/video player&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
            </widget>
           </item>
@@ -129,72 +128,62 @@
             </property>
            </widget>
           </item>
-          <item row="4" column="2">
-           <widget class="QToolButton" name="rcloneConfBrowse">
+          <item row="1" column="0">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>rclone.conf location:</string>
+            </property>
+            <property name="buddy">
+             <cstring>rcloneConf</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="0">
+           <widget class="QLabel" name="label_12">
+            <property name="text">
+             <string>Default rclone options:</string>
+            </property>
+            <property name="buddy">
+             <cstring>defaultRcloneOptions</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="2">
+           <widget class="QToolButton" name="defaultUploadDirBrowse">
             <property name="text">
              <string>...</string>
             </property>
            </widget>
           </item>
-          <item row="4" column="1">
-           <widget class="QLineEdit" name="rcloneConf">
-            <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;rclone configuration file locaction. if empty default location defined by rclone is used&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-           </widget>
-          </item>
-          <item row="13" column="0">
-           <widget class="QLabel" name="label_11">
-            <property name="text">
-             <string>Default upload options:</string>
-            </property>
-            <property name="buddy">
-             <cstring>defaultUploadOptions</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="0">
-           <widget class="QLabel" name="label_2">
-            <property name="text">
-             <string>Stream command:</string>
-            </property>
-            <property name="buddy">
-             <cstring>stream</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="1">
+          <item row="3" column="1">
            <widget class="QLineEdit" name="mount">
             <property name="toolTip">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;options used by rclone for remotes mounting&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
            </widget>
           </item>
-          <item row="13" column="1">
-           <widget class="QLineEdit" name="defaultUploadOptions">
-            <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;extra rclone options used for uploads&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-           </widget>
-          </item>
-          <item row="11" column="1">
-           <widget class="QLineEdit" name="defaultUploadDir">
-            <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;default upload folder used for transfers&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-           </widget>
-          </item>
-          <item row="9" column="0">
-           <widget class="QLabel" name="label_d">
+          <item row="0" column="2">
+           <widget class="QToolButton" name="rcloneBrowse">
             <property name="text">
-             <string>Default download folder:</string>
-            </property>
-            <property name="buddy">
-             <cstring>defaultDownloadDir</cstring>
+             <string>...</string>
             </property>
            </widget>
           </item>
-          <item row="12" column="0">
+          <item row="8" column="1">
+           <widget class="QLineEdit" name="defaultRcloneOptions">
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;extra rclone options used for all operations&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QLineEdit" name="defaultDownloadDir">
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;default download folder used for transfers&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
            <widget class="QLabel" name="label_10">
             <property name="text">
              <string>Default download options:</string>
@@ -204,34 +193,92 @@
             </property>
            </widget>
           </item>
-          <item row="9" column="2">
+          <item row="9" column="1">
+           <widget class="QLineEdit" name="defaultMountDir">
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;default download folder used for transfers&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="mountLabel">
+            <property name="text">
+             <string>Mount options:</string>
+            </property>
+            <property name="buddy">
+             <cstring>mount</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="2">
            <widget class="QToolButton" name="defaultDownloadDirBrowse">
             <property name="text">
              <string>...</string>
             </property>
            </widget>
           </item>
-          <item row="14" column="1">
-           <widget class="QLineEdit" name="defaultRcloneOptions">
-            <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;extra rclone options used for all operations&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-           </widget>
-          </item>
-          <item row="11" column="0">
-           <widget class="QLabel" name="label_u">
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_2">
             <property name="text">
-             <string>Default upload folder:</string>
+             <string>Stream command:</string>
             </property>
             <property name="buddy">
-             <cstring>defaultUploadDir</cstring>
+             <cstring>stream</cstring>
             </property>
            </widget>
           </item>
-          <item row="6" column="1">
-           <widget class="QLineEdit" name="stream">
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="rcloneConf">
             <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;location of audio/video player&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;rclone configuration file locaction. if empty default location defined by rclone is used&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QLineEdit" name="defaultUploadDir">
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;default upload folder used for transfers&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="0">
+           <widget class="QLabel" name="label_d_2">
+            <property name="text">
+             <string>Default mount folder:</string>
+            </property>
+            <property name="buddy">
+             <cstring>defaultDownloadDir</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="2">
+           <widget class="QToolButton" name="defaultMountDirBrowse">
+            <property name="text">
+             <string>...</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_d">
+            <property name="text">
+             <string>Default download folder:</string>
+            </property>
+            <property name="buddy">
+             <cstring>defaultDownloadDir</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="1">
+           <widget class="QLineEdit" name="defaultUploadOptions">
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;extra rclone options used for uploads&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="rclone">
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;rclone executable file location&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
            </widget>
           </item>
@@ -258,25 +305,12 @@
          <zorder>rcloneBrowse</zorder>
          <zorder>rcloneConfBrowse</zorder>
          <zorder>defaultDownloadDir</zorder>
+         <zorder>label_d_2</zorder>
+         <zorder>defaultMountDir</zorder>
+         <zorder>defaultMountDirBrowse</zorder>
         </widget>
        </item>
-       <item>
-        <spacer name="verticalSpacer1">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>0</width>
-           <height>10</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
+       <item row="2" column="0" colspan="2">
         <widget class="QGroupBox" name="groupBox_4">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -298,16 +332,6 @@
            <number>12</number>
           </property>
           <item>
-           <widget class="QCheckBox" name="checkRcloneBrowserUpdates">
-            <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;check daily for Rclone Browser availability&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-            <property name="text">
-             <string>Check for Rclone Browser updates</string>
-            </property>
-           </widget>
-          </item>
-          <item>
            <widget class="QCheckBox" name="checkRcloneUpdates">
             <property name="toolTip">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;check daily for rclone availability&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -317,21 +341,18 @@
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QCheckBox" name="checkRcloneBrowserUpdates">
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;check daily for Rclone Browser availability&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>Check for Rclone Browser updates</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
-       </item>
-       <item>
-        <spacer name="verticalSpacer_General">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>0</height>
-          </size>
-         </property>
-        </spacer>
        </item>
       </layout>
      </widget>
@@ -736,9 +757,6 @@
   <tabstop>defaultDownloadOptions</tabstop>
   <tabstop>defaultUploadOptions</tabstop>
   <tabstop>defaultRcloneOptions</tabstop>
-  <tabstop>checkRcloneBrowserUpdates</tabstop>
-  <tabstop>checkRcloneUpdates</tabstop>
-  <tabstop>tabWidget</tabstop>
   <tabstop>alwaysShowInTray</tabstop>
   <tabstop>closeToTray</tabstop>
   <tabstop>notifyFinishedTransfers</tabstop>

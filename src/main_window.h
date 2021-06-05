@@ -24,6 +24,7 @@ private slots:
                    const QString &dest, const QStringList &args);
   void addMount(const QString &remote, const QString &folder);
   void addStream(const QString &remote, const QString &stream);
+  void mountRemote(const QString &remote, const QString &path);
 
 private:
   Ui::MainWindow ui;

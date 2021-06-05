@@ -51,6 +51,19 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) : QDialog(parent) {
       });
 
   QObject::connect(
+      ui.defaultMountDirBrowse, &QPushButton::clicked, this, [=]() {
+        QString defaultMountDir = QFileDialog::getExistingDirectory(
+            this, "Select default mount directory",
+            ui.defaultMountDir->text());
+
+        if (defaultMountDir.isEmpty()) {
+          return;
+        }
+
+        ui.defaultMountDir->setText(defaultMountDir);
+      });
+
+  QObject::connect(
       ui.defaultUploadDirBrowse, &QPushButton::clicked, this, [=]() {
         QString defaultUploadDir = QFileDialog::getExistingDirectory(
             this, "Select default upload directory",
@@ -92,7 +105,8 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) : QDialog(parent) {
       settings->value("Settings/defaultUploadOptions").toString());
   ui.defaultRcloneOptions->setText(
       settings->value("Settings/defaultRcloneOptions").toString());
-
+  ui.defaultMountDir->setText(QDir::toNativeSeparators(
+      settings->value("Settings/defaultMountDir").toString()));
   ui.checkRcloneBrowserUpdates->setChecked(
       settings->value("Settings/checkRcloneBrowserUpdates", true).toBool());
   ui.checkRcloneUpdates->setChecked(
@@ -180,6 +194,10 @@ QString PreferencesDialog::getMount() const { return ui.mount->text(); }
 
 QString PreferencesDialog::getDefaultDownloadDir() const {
   return QDir::fromNativeSeparators(ui.defaultDownloadDir->text());
+}
+
+QString PreferencesDialog::getDefaultMountDir() const {
+  return QDir::fromNativeSeparators(ui.defaultMountDir->text());
 }
 
 QString PreferencesDialog::getDefaultUploadDir() const {

@@ -152,6 +152,8 @@ MainWindow::MainWindow() {
       settings->setValue("Settings/mount", dialog.getMount());
       settings->setValue("Settings/defaultDownloadDir",
                          dialog.getDefaultDownloadDir().trimmed());
+      settings->setValue("Settings/defaultMountDir",
+                         dialog.getDefaultMountDir().trimmed());
       settings->setValue("Settings/defaultUploadDir",
                          dialog.getDefaultUploadDir().trimmed());
       settings->setValue("Settings/defaultDownloadOptions",
@@ -223,7 +225,10 @@ MainWindow::MainWindow() {
 
   QObject::connect(
       ui.remotes, &QListWidget::currentItemChanged, this,
-      [=](QListWidgetItem *current) { ui.open->setEnabled(current != NULL); });
+          [=](QListWidgetItem *current) { ui.open->setEnabled(current != NULL);
+                                      ui.mount->setEnabled(current != NULL);
+                                      ui.mount_all->setEnabled(current != NULL);
+                                      });
   QObject::connect(ui.remotes, &QListWidget::itemActivated, ui.open,
                    &QPushButton::clicked);
 
@@ -250,6 +255,27 @@ MainWindow::MainWindow() {
     int index = ui.tabs->addTab(remote, name);
     ui.tabs->setCurrentIndex(index);
   });
+
+  QObject::connect(ui.mount, &QPushButton::clicked, this, [=]() {
+
+    auto item = ui.remotes->selectedItems().front();
+    QString type = item->data(Qt::UserRole).toString();
+    QString remote = item->text();
+
+    MainWindow::mountRemote(remote, "");
+
+  });
+
+  QObject::connect(ui.mount_all, &QPushButton::clicked, this, [=]() {
+
+    for(int i = 0; i < ui.remotes->count(); ++i)
+    {
+        QListWidgetItem* item = ui.remotes->item(i);
+        QString remote = item->text();
+        MainWindow::mountRemote(remote, "");
+    }
+  });
+
 
   QObject::connect(ui.tabs, &QTabWidget::tabCloseRequested, ui.tabs,
                    &QTabWidget::removeTab);
@@ -350,9 +376,16 @@ MainWindow::MainWindow() {
         osxShowDockIcon();
 #endif
       });
+
+  trayMenu->addSeparator();
   QObject::connect(trayMenu->addAction("&Quit"), &QAction::triggered, this,
                    &QWidget::close);
+
+
   mSystemTray.setContextMenu(trayMenu);
+
+  ui.mount->setIcon(style->standardIcon(QStyle::SP_DriveNetIcon));
+  ui.mount_all->setIcon(style->standardIcon(QStyle::SP_DriveNetIcon));
 
   mStatusMessage = new QLabel();
   ui.statusBar->addWidget(mStatusMessage);
@@ -376,6 +409,7 @@ MainWindow::MainWindow() {
   } else {
     rcloneGetVersion();
   }
+  ui.mount_all->setEnabled(ui.remotes->count() > 0);
 }
 
 MainWindow::~MainWindow() {
@@ -490,6 +524,7 @@ void MainWindow::rcloneGetVersion() {
 #endif
 
           rcloneListRemotes();
+
         } else {
           if (p->error() != QProcess::FailedToStart) {
             if (getConfigPassword(p)) {
@@ -893,6 +928,7 @@ void MainWindow::rcloneListRemotes() {
             item->setData(Qt::UserRole, type);
             item->setToolTip(tooltip);
             ui.remotes->addItem(item);
+            ui.remotes->setCurrentRow(0);
           }
         } else {
           if (p->error() != QProcess::FailedToStart) {
@@ -904,11 +940,13 @@ void MainWindow::rcloneListRemotes() {
         p->deleteLater();
       });
 
-  UseRclonePassword(p);
-  p->start(GetRclone(),
+    UseRclonePassword(p);
+    p->start(GetRclone(),
            QStringList() << "listremotes" << GetRcloneConf() << "--long"
                          << "--ask-password=false",
            QIODevice::ReadOnly);
+
+
 }
 
 bool MainWindow::getConfigPassword(QProcess *p) {
@@ -1085,6 +1123,7 @@ void MainWindow::addTransfer(const QString &message, const QString &source,
 }
 
 void MainWindow::addMount(const QString &remote, const QString &folder) {
+
   QProcess *mount = new QProcess(this);
   mount->setProcessChannelMode(QProcess::MergedChannels);
 
@@ -1219,4 +1258,48 @@ void MainWindow::addStream(const QString &remote, const QString &stream) {
   rclone->start(GetRclone(),
                 QStringList() << "cat" << GetRcloneConf() << remote,
                 QProcess::WriteOnly);
+}
+
+void MainWindow::mountRemote(const QString &remote, const QString &path) {
+
+    auto settings = GetSettings();
+
+    QString rootMountPath = settings->value("Settings/defaultMountDir").toString();
+    QString folder;
+
+    if (!rootMountPath.isEmpty()) {
+
+        folder = QDir(rootMountPath).filePath(remote);
+
+        QDir dir(folder);
+        if (!dir.exists())
+            dir.mkpath(".");
+
+        const QFileInfo outputDir(folder);
+
+        if (!(outputDir.exists()) || (!outputDir.isDir()) || (!outputDir.isWritable())) {
+            QString msg = QString("%1 output directory does not exist, is not a directory, or is not writeable").arg(folder);
+            QMessageBox msgBox;
+            msgBox.setText(msg);
+            msgBox.exec();
+        }
+
+
+    } else {
+
+    #if defined(Q_OS_WIN32)
+        folder =
+            QInputDialog::getText(this, "Mount",
+                                QString("(Make sure you have WinFsp-FUSE "
+                                        "installed)\n\nDrive to mount %1 to")
+                                    .arg(remote),
+                                QLineEdit::Normal, "Z:");
+    #else
+        folder = QFileDialog::getExistingDirectory(this, QString("Mount %1").arg(remote));
+    #endif
+    }
+
+    if (!folder.isEmpty()) {
+      emit addMount(remote + ":" + path, folder);
+    }
 }

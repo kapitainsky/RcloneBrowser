@@ -299,18 +299,18 @@ QString root = isLocal ? "/" : QString();
     QModelIndex index = ui.tree->selectionModel()->selectedRows().front();
 
     QString path = model->path(index).path();
-    QString pathMsg = isLocal ? QDir::toNativeSeparators(path) : path;
+    QString folder;
 
-#if defined(Q_OS_WIN32)
-    QString folder =
+    #if defined(Q_OS_WIN32)
+    folder =
         QInputDialog::getText(this, "Mount",
-                              QString("(Make sure you have WinFsp-FUSE "
-                                      "installed)\n\nDrive to mount %1 to")
-                                  .arg(remote),
-                              QLineEdit::Normal, "Z:");
-#else
-        QString folder = QFileDialog::getExistingDirectory(this, QString("Mount %1").arg(remote));
-#endif
+                            QString("(Make sure you have WinFsp-FUSE "
+                                    "installed)\n\nDrive to mount %1 to")
+                                .arg(remote),
+                            QLineEdit::Normal, "Z:");
+    #else
+        folder = QFileDialog::getExistingDirectory(this, QString("Mount %1").arg(remote));
+    #endif
 
     if (!folder.isEmpty()) {
       emit addMount(remote + ":" + path, folder);
